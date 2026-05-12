@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Kakuab Market - Marketplace B2B de produtos naturais, orgânicos e sustentáveis. Conectando você ao natural.">
+  <title>Kakuab Market | Conectando você ao natural</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+
+<body>
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/images/logo.png" alt="Kakuab Market Logo">
+        <strong>kakuab</strong> <span>market</span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#hero">Início</a>
+        <a href="#products">Produtos</a>
+        <a href="#categories">Categorias</a>
+        <a href="#why-us">Sobre</a>
+        <a href="#footer">Contato</a>
+        <a href="fornecedor.html">Fornecedor</a>
+      </div>
+
+      <div class="nav-actions">
+        <button id="searchBtn" aria-label="Buscar"
+          onclick="document.getElementById('products').scrollIntoView(); document.getElementById('search-input').focus();">
+          <span class="material-icons-outlined">search</span>
+        </button>
+
+        <!-- Estado Deslogado -->
+        <a href="login.html" id="navLoginBtn" style="text-decoration:none;">
+          <button aria-label="Minha conta" class="login-btn-icon">
+            <span class="material-icons-outlined">person_outline</span>
+            <span class="login-text" style="font-size:0.9rem;font-weight:500;margin-left:4px;">Entrar</span>
+          </button>
+        </a>
+
+        <!-- Estado Logado (Dropdown) -->
+        <div class="user-dropdown-container" id="navUserMenu" style="display: none; position: relative;">
+          <button aria-label="Menu do Usuário" class="user-menu-btn" onclick="toggleUserDropdown()">
+            <span class="material-icons-outlined">account_circle</span>
+            <span id="navUserName" style="font-size:0.9rem;font-weight:600;margin-left:4px;">Usuário</span>
+            <span class="material-icons-outlined" style="font-size:1rem;">expand_more</span>
+          </button>
+
+          <div class="user-dropdown-menu" id="userDropdownMenu" style="display: none;">
+            <a href="meu-perfil.html"><span class="material-icons-outlined">person</span> Meu Perfil</a>
+            <a href="favoritos.html"><span class="material-icons-outlined">favorite</span> Favoritos</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" onclick="fazerLogout()" class="logout-link"><span class="material-icons-outlined">logout</span>
+              Sair</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== HERO SECTION ========== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <img src="assets/images/hero-banner.png" alt="Natureza e produtos orgânicos">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Conectando você<br>ao natural <span class="emoji">🌿</span></h1>
+      <p>Descubra produtos orgânicos, naturais e sustentáveis de pequenos produtores direto para seu negócio.</p>
+      <a href="#products" class="hero-cta">
+        <span class="material-icons-outlined">storefront</span>
+        Explorar Produtos
+      </a>
+    </div>
+  </section>
+
+  <!-- ========== CATEGORIES ========== -->
+  <section class="categories" id="categories">
+    <div class="categories-grid">
+      <div class="category-card" onclick="filtrarPelaCategoriaVitrine('Orgânico')">
+        <div class="category-icon">🍎</div>
+        <h3>Orgânicos</h3>
+        <p>Cultivo sem agrotóxicos, direto do campo para sua empresa</p>
+      </div>
+      <div class="category-card" onclick="filtrarPelaCategoriaVitrine('Natural')">
+        <div class="category-icon">🌿</div>
+        <h3>Naturais</h3>
+        <p>Ervas e produtos naturais com certificação de qualidade</p>
+      </div>
+      <div class="category-card" onclick="filtrarPelaCategoriaVitrine('Sustentável')">
+        <div class="category-icon">♻️</div>
+        <h3>Sustentáveis</h3>
+        <p>Produtos eco-friendly com embalagens biodegradáveis</p>
+      </div>
+      <div class="category-card" onclick="filtrarPelaCategoriaVitrine('Artesanal')">
+        <div class="category-icon">🧴</div>
+        <h3>Artesanais</h3>
+        <p>Feitos à mão com ingredientes naturais selecionados</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PRODUCTS ========== -->
+  <section class="products" id="products">
+    <div class="container">
+      <div class="products-header">
+        <h2 class="section-title">Produtos em Destaque</h2>
+      </div>
+
+      <!-- Barra de Filtros e Busca -->
+      <div class="filters-bar">
+        <div class="search-box">
+          <span class="material-icons-outlined search-icon">search</span>
+          <input type="text" id="search-input" placeholder="Buscar por produto, marca ou fornecedor..."
+            onkeyup="aplicarFiltrosVitrine()">
+        </div>
+
+        <div class="filters-group">
+          <select id="filter-categoria" onchange="aplicarFiltrosVitrine()">
+            <option value="">Todas as Categorias</option>
+            <option value="Orgânico">Orgânicos</option>
+            <option value="Natural">Naturais</option>
+            <option value="Sustentável">Sustentáveis</option>
+            <option value="Artesanal">Artesanais</option>
+          </select>
+
+          <select id="filter-regiao" onchange="aplicarFiltrosVitrine()">
+            <option value="">Qualquer Região</option>
+            <!-- Preenchido via JS baseado nos anúncios -->
+          </select>
+
+          <select id="filter-moq" onchange="aplicarFiltrosVitrine()">
+            <option value="">Qualquer Quantidade (MOQ)</option>
+            <option value="10">Até 10 un</option>
+            <option value="50">Até 50 un</option>
+            <option value="100">Até 100 un</option>
+          </select>
+
+          <select id="filter-avaliacao" onchange="aplicarFiltrosVitrine()">
+            <option value="">Qualquer Avaliação</option>
+            <option value="4">4 Estrelas ou mais</option>
+            <option value="5">5 Estrelas</option>
+          </select>
+
+          <button class="btn btn-secondary" onclick="limparFiltrosVitrine()"
+            style="padding: 10px 16px; font-size: 0.85rem;">
+            Limpar
+          </button>
+        </div>
+      </div>
+
+      <!-- Container de Produtos (Preenchido via JS) -->
+      <div class="products-grid" id="products-grid-container">
+        <!-- Anúncios serão injetados aqui -->
+        <div class="loading-state"
+          style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+          Carregando os melhores produtos sustentáveis para você...
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== WHY CHOOSE US ========== -->
+  <section class="why-us" id="why-us">
+    <div class="container">
+      <div class="why-us-header">
+        <h2>Por que escolher o Kakuab Market?</h2>
+        <p>O Kakuab Market conecta comércios e produtores de alimentos e produtos sustentáveis.</p>
+      </div>
+
+      <div class="why-us-grid">
+        <div class="why-card">
+          <div class="why-icon">
+            <span class="material-icons-outlined">eco</span>
+          </div>
+          <h3>Sustentabilidade</h3>
+          <p>Comprometidos com práticas sustentáveis em toda a cadeia</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">
+            <span class="material-icons-outlined">inventory_2</span>
+          </div>
+          <h3>Embalagens Eco</h3>
+          <p>Embalagens 100% recicláveis e biodegradáveis</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">
+            <span class="material-icons-outlined">groups</span>
+          </div>
+          <h3>Pequenos Produtores</h3>
+          <p>Valorizamos e conectamos pequenos produtores locais</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">
+            <span class="material-icons-outlined">spa</span>
+          </div>
+          <h3>Produtos Naturais</h3>
+          <p>Garantia de produtos 100% naturais e certificados</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURED CAROUSEL ========== -->
+  <section class="featured" id="featured">
+    <div class="container">
+      <h2 class="section-title">Destaques</h2>
+      <div class="carousel-wrapper">
+        <div class="carousel-track" id="carouselTrack">
+          <div class="carousel-card">
+            <div class="carousel-card-img">
+              <img src="assets/images/apple.png" alt="Cenoura Orgânica">
+            </div>
+            <div class="carousel-card-info">
+              <h4>Cenoura Orgânica</h4>
+              <div class="star-rating">★★★★★</div>
+            </div>
+          </div>
+          <div class="carousel-card">
+            <div class="carousel-card-img">
+              <img src="assets/images/essential-oil.png" alt="Ervas Finas">
+            </div>
+            <div class="carousel-card-info">
+              <h4>Ervas Finas</h4>
+              <div class="star-rating">★★★★☆</div>
+            </div>
+          </div>
+          <div class="carousel-card">
+            <div class="carousel-card-img">
+              <img src="assets/images/eco-kit.png" alt="Azeite Orgânico">
+            </div>
+            <div class="carousel-card-info">
+              <h4>Azeite Orgânico</h4>
+              <div class="star-rating">★★★★★</div>
+            </div>
+          </div>
+          <div class="carousel-card">
+            <div class="carousel-card-img">
+              <img src="assets/images/apple.png" alt="Mel Natural">
+            </div>
+            <div class="carousel-card-info">
+              <h4>Mel Natural</h4>
+              <div class="star-rating">★★★★★</div>
+            </div>
+          </div>
+          <div class="carousel-card">
+            <div class="carousel-card-img">
+              <img src="assets/images/essential-oil.png" alt="Granola Artesanal">
+            </div>
+            <div class="carousel-card-info">
+              <h4>Granola Artesanal</h4>
+              <div class="star-rating">★★★★☆</div>
+            </div>
+          </div>
+          <div class="carousel-card">
+            <div class="carousel-card-img">
+              <img src="assets/images/eco-kit.png" alt="Chá Orgânico">
+            </div>
+            <div class="carousel-card-info">
+              <h4>Chá Orgânico</h4>
+              <div class="star-rating">★★★★★</div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="carouselPrev" aria-label="Anterior">
+            <span class="material-icons-outlined">chevron_left</span>
+          </button>
+          <button class="carousel-btn" id="carouselNext" aria-label="Próximo">
+            <span class="material-icons-outlined">chevron_right</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== NEWSLETTER ========== -->
+  <section class="newsletter" id="newsletter">
+    <div class="container">
+      <div class="newsletter-content">
+        <div class="newsletter-text">
+          <h2>Receba novidades e ofertas verdes 🌱</h2>
+          <p>Fique por dentro das melhores promoções e lançamentos.</p>
+        </div>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="Digite seu e-mail" required>
+          <button type="submit">INSCREVA-SE</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="assets/images/logo.png" alt="Kakuab Logo">
+            <strong>kakuab</strong> <span>market</span>
+          </div>
+          <p>Marketplace B2B conectando compradores e fornecedores de produtos naturais, orgânicos e sustentáveis.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Facebook"><span class="material-icons-outlined">public</span></a>
+            <a href="#" aria-label="Instagram"><span class="material-icons-outlined">photo_camera</span></a>
+            <a href="#" aria-label="LinkedIn"><span class="material-icons-outlined">work</span></a>
+            <a href="#" aria-label="E-mail"><span class="material-icons-outlined">mail</span></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navegação</h4>
+          <ul>
+            <li><a href="#hero">Início</a></li>
+            <li><a href="#products">Produtos</a></li>
+            <li><a href="#categories">Categorias</a></li>
+            <li><a href="#why-us">Sobre Nós</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Categorias</h4>
+          <ul>
+            <li><a href="#">Orgânicos</a></li>
+            <li><a href="#">Naturais</a></li>
+            <li><a href="#">Sustentáveis</a></li>
+            <li><a href="#">Artesanais</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Suporte</h4>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Política de Privacidade</a></li>
+            <li><a href="#">Termos de Uso</a></li>
+            <li><a href="#">Contato</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Kakuab Market — MisterCode / FECAP. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/home-api.js"></script>
+  <script src="js/script.js"></script>
+</body>
+
+</html>

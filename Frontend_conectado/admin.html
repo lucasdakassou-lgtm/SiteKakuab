@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Kakuab Market</title>
+  <link rel="stylesheet" href="css/admin-dashboard.css">
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <style>
+    .page-section { display: none; }
+    .page-section.active-section { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-container">
+    
+    <!-- Coluna Lateral Esquerda -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <img src="assets/images/logo.png" alt="Logo" onerror="this.style.display='none'">
+        Kakuab Admin
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li><a href="#" onclick="navegarPara('dashboard')" id="nav-dashboard" class="active"><span class="material-icons-outlined">dashboard</span> Dashboard</a></li>
+        <li><a href="#" onclick="navegarPara('pendentes')" id="nav-pendentes"><span class="material-icons-outlined">pending_actions</span> Anúncios Pendentes</a></li>
+        <li><a href="#" onclick="navegarPara('usuarios')" id="nav-usuarios"><span class="material-icons-outlined">group</span> Usuários</a></li>
+        <li><a href="#" onclick="navegarPara('avaliacoes')" id="nav-avaliacoes"><span class="material-icons-outlined">star_rate</span> Avaliações</a></li>
+        <li><a href="#" onclick="navegarPara('relatorios')" id="nav-relatorios"><span class="material-icons-outlined">analytics</span> Relatórios</a></li>
+        <li><a href="#" onclick="navegarPara('auditoria')" id="nav-auditoria"><span class="material-icons-outlined">history</span> Auditoria</a></li>
+        <li><a href="#" onclick="navegarPara('ranking')" id="nav-ranking"><span class="material-icons-outlined">emoji_events</span> Ranking</a></li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <a href="#" onclick="logout(); return false;">
+          <span class="material-icons-outlined">logout</span> Sair
+        </a>
+      </div>
+    </aside>
+
+    <!-- Coluna Central Principal -->
+    <main class="main-content">
+      
+      <header class="top-header">
+        <h1 id="pageTitle">Painel de Controle</h1>
+        <div class="user-profile">
+          <span id="adminNameDisplay">Administrador</span>
+          <div class="user-avatar">A</div>
+        </div>
+      </header>
+
+      <!-- SEÇÃO DASHBOARD E ANÚNCIOS PENDENTES -->
+      <div id="section-dashboard" class="page-section active-section">
+        <!-- Cards de Resumo -->
+        <section class="summary-cards">
+          <div class="s-card">
+            <div class="s-card-header">
+              <span>Anúncios Pendentes</span>
+              <div class="s-card-icon icon-orange"><span class="material-icons-outlined">hourglass_empty</span></div>
+            </div>
+            <div class="s-card-value" id="countPendentes">0</div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-header">
+              <span>Usuários Ativos</span>
+              <div class="s-card-icon icon-blue"><span class="material-icons-outlined">group</span></div>
+            </div>
+            <div class="s-card-value" id="countUsuarios">0</div>
+          </div>
+          <div class="s-card">
+            <div class="s-card-header">
+              <span>Avaliações Feitas</span>
+              <div class="s-card-icon icon-green"><span class="material-icons-outlined">star</span></div>
+            </div>
+            <div class="s-card-value" id="countAvaliacoes">0</div>
+          </div>
+        </section>
+
+        <!-- Lista de anúncios pendentes -->
+        <section class="content-card">
+          <div class="content-header">
+            <h2>Anúncios aguardando moderação</h2>
+          </div>
+          <div class="table-wrapper">
+            <table id="pendentesTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Produto</th>
+                  <th>Fornecedor</th>
+                  <th>Data</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="pendentesBody">
+                <tr><td colspan="5">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- OUTRAS SEÇÕES (EM CONSTRUÇÃO) -->
+      <div id="section-pendentes" class="page-section">
+        <section class="content-card">
+          <div class="content-header">
+            <h2>Gestão de Anúncios</h2>
+          </div>
+          <div class="table-wrapper" style="padding: 24px; text-align: center; color: var(--text-muted);">
+            Selecione a aba Dashboard para ver e moderar os anúncios pendentes. (Módulo dedicado em breve)
+          </div>
+        </section>
+      </div>
+
+      <div id="section-usuarios" class="page-section">
+        <section class="content-card">
+          <div class="content-header">
+            <h2>Gestão de Usuários</h2>
+          </div>
+          <div class="table-wrapper">
+            <table id="usuariosTable">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>E-mail</th>
+                  <th>Tipo</th>
+                  <th>CNPJ / Local</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="usuariosBody">
+                <tr><td colspan="6" style="text-align: center;">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <div id="section-avaliacoes" class="page-section">
+        <section class="content-card">
+          <div class="content-header">
+            <h2>Moderação de Avaliações</h2>
+          </div>
+          <div class="table-wrapper">
+            <table id="avaliacoesTable">
+              <thead>
+                <tr>
+                  <th>Comprador</th>
+                  <th>Anúncio</th>
+                  <th>Nota</th>
+                  <th>Comentário</th>
+                  <th>Data</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="avaliacoesBody">
+                <tr><td colspan="6" style="text-align: center;">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <div id="section-relatorios" class="page-section">
+        <section class="summary-cards" id="relatoriosCards" style="margin-bottom: 24px;">
+          <!-- Cards injetados via JS -->
+        </section>
+        <section class="content-card">
+          <div class="content-header">
+            <h2>Detalhamento do Sistema</h2>
+          </div>
+          <div class="table-wrapper" style="padding: 24px;">
+             Aqui podemos expandir gráficos no futuro. Os números chave estão nos cards acima.
+          </div>
+        </section>
+      </div>
+
+      <div id="section-auditoria" class="page-section">
+        <section class="content-card">
+          <div class="content-header">
+            <h2>Logs de Auditoria</h2>
+          </div>
+          <div class="table-wrapper">
+            <table id="auditoriaTable">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Admin</th>
+                  <th>Ação</th>
+                  <th>Descrição / Entidade</th>
+                </tr>
+              </thead>
+              <tbody id="auditoriaBody">
+                <tr><td colspan="4" style="text-align: center;">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <div id="section-ranking" class="page-section">
+        <section class="content-card">
+          <div class="content-header">
+            <h2>Ranking: Top 10 Melhores Anúncios (Favoritos)</h2>
+          </div>
+          <div class="table-wrapper">
+            <table id="rankingTable">
+              <thead>
+                <tr>
+                  <th>Posição</th>
+                  <th>ID</th>
+                  <th>Título do Anúncio</th>
+                  <th>Fornecedor</th>
+                  <th>Favoritadas</th>
+                </tr>
+              </thead>
+              <tbody id="rankingBody">
+                <tr><td colspan="5" style="text-align: center;">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+      
+    </main>
+
+    <!-- Coluna Direita -->
+    <aside class="right-panel">
+      <!-- Placeholder quando nada está selecionado -->
+      <div class="panel-placeholder" id="panelPlaceholder">
+        <span class="material-icons-outlined">ads_click</span>
+        <p>Selecione um item na tabela central para ver os detalhes ou moderar.</p>
+      </div>
+
+      <!-- Conteúdo do Item Selecionado -->
+      <div class="panel-content" id="panelContent">
+        <div class="panel-header">
+          <button class="panel-close" onclick="fecharDetalhes()"><span class="material-icons-outlined">close</span></button>
+          <div class="item-img-container" id="detalheImgContainer">
+             <span class="material-icons-outlined">image</span>
+          </div>
+          <h3 class="panel-title" id="detalheTitulo">Título do Produto</h3>
+          <div class="panel-supplier" id="detalheFornecedor">Fornecedor SA</div>
+        </div>
+
+        <div class="panel-body">
+          <div class="detail-row">
+            <div class="detail-label">Categoria</div>
+            <div class="detail-value" id="detalheCategoria">-</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Descrição</div>
+            <div class="detail-value" id="detalheDescricao">-</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Marca / MOq</div>
+            <div class="detail-value" id="detalheMarcaMoq">-</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Data de Criação</div>
+            <div class="detail-value" id="detalheData">-</div>
+          </div>
+        </div>
+
+        <div class="panel-actions">
+          <button class="btn btn-approve" id="btnAprovar" onclick="aprovarSelecionado()">
+            <span class="material-icons-outlined">check_circle</span> Aprovar Anúncio
+          </button>
+          
+          <button class="btn btn-reject" id="btnRecusar" onclick="mostrarCaixaReprovacao()">
+            <span class="material-icons-outlined">cancel</span> Reprovar Anúncio
+          </button>
+
+          <div class="reject-box" id="rejectBox">
+            <div class="detail-label">Motivo da Reprovação</div>
+            <textarea id="motivoReprovacao" placeholder="Ex: Produto não atende aos critérios de sustentabilidade..."></textarea>
+            <button class="btn btn-confirm-reject" onclick="reprovarSelecionado()">
+              Confirmar Reprovação
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+/* =============================================
+   KAKUAB MARKET - Login Page Styles
+   ============================================= */
+
+.login-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ---------- Left Side - Form ---------- */
+.login-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background: linear-gradient(135deg, var(--beige-light) 0%, var(--beige) 100%);
+  position: relative;
+}
+
+.login-left::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 200px;
+  height: 200px;
+  background: var(--green-100);
+  border-radius: 50%;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.login-content {
+  width: 100%;
+  max-width: 420px;
+  z-index: 1;
+  animation: fadeInUp 0.7s ease-out;
+}
+
+.login-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--green-900);
+  margin-bottom: 8px;
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.login-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 36px;
+}
+
+/* ---------- Form Styles ---------- */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  padding: 0 16px;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.input-group:focus-within {
+  border-color: var(--green-500);
+  box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+}
+
+.input-group .input-icon {
+  color: var(--gray-400);
+  font-size: 1.2rem;
+  margin-right: 10px;
+  transition: var(--transition);
+}
+
+.input-group:focus-within .input-icon {
+  color: var(--green-500);
+}
+
+.input-group input {
+  flex: 1;
+  padding: 14px 0;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.input-group input::placeholder {
+  color: var(--gray-400);
+}
+
+.toggle-password {
+  color: var(--gray-400);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: var(--transition);
+}
+
+.toggle-password:hover {
+  color: var(--green-500);
+}
+
+.forgot-link {
+  align-self: flex-start;
+  color: var(--green-700);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: -4px;
+  transition: var(--transition);
+}
+
+.forgot-link:hover {
+  color: var(--green-900);
+  text-decoration: underline;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--green-700), var(--green-600));
+  color: var(--white);
+  border-radius: var(--radius-xl);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  box-shadow: var(--shadow-md);
+  margin-top: 8px;
+}
+
+.login-btn:hover {
+  background: linear-gradient(135deg, var(--green-800), var(--green-700));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.login-btn:active {
+  transform: translateY(0);
+}
+
+.register-prompt {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.register-prompt a {
+  color: var(--green-700);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.1rem;
+  display: block;
+  margin-top: 4px;
+  transition: var(--transition);
+}
+
+.register-prompt a:hover {
+  color: var(--green-900);
+  transform: scale(1.02);
+}
+
+/* ---------- Right Side - Logo ---------- */
+.login-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(160deg, var(--green-800) 0%, var(--green-700) 50%, var(--green-600) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-right::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+}
+
+.login-right::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  left: -80px;
+  width: 300px;
+  height: 300px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 50%;
+}
+
+.logo-container {
+  text-align: center;
+  z-index: 1;
+  animation: fadeIn 1s ease-out;
+}
+
+.logo-container img {
+  width: 280px;
+  height: 280px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.2));
+  transition: var(--transition);
+}
+
+.logo-container img:hover {
+  transform: scale(1.05);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .login-wrapper {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .login-right {
+    order: -1;
+    padding: 40px;
+    min-height: 200px;
+  }
+
+  .logo-container img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .login-left {
+    padding: 30px 24px 50px;
+  }
+
+  .login-title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .login-subtitle {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-left {
+    padding: 24px 16px 40px;
+  }
+
+  .login-title {
+    font-size: 1.3rem;
+  }
+
+  .input-group {
+    padding: 0 12px;
+  }
+
+  .input-group input {
+    padding: 12px 0;
+    font-size: 0.9rem;
+  }
+}

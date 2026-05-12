@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal do Fornecedor | Kakuab Market</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* =========================================================
+       PREMIUM DASHBOARD DESIGN
+       ========================================================= */
+    :root {
+      --primary: #0b7d3b;
+      --primary-light: #e6f4ea;
+      --primary-dark: #075a2a;
+      --surface: #ffffff;
+      --background: #f4f7f6;
+      --text-main: #1d2b23;
+      --text-muted: #627d6d;
+      --border: #e0e8e3;
+      --radius: 16px;
+      --shadow: 0 8px 30px rgba(11, 125, 59, 0.06);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--background);
+      color: var(--text-main);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 0;
+      z-index: 10;
+      box-shadow: 2px 0 20px rgba(0,0,0,0.02);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 28px 32px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 12px rgba(11, 125, 59, 0.3);
+    }
+
+    .brand-name {
+      font-size: 1.2rem;
+      font-weight: 800;
+      font-family: 'Playfair Display', serif;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-menu {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 0 16px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .nav-item:hover {
+      background: #f8faf9;
+      color: var(--primary);
+    }
+
+    .nav-item.active {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .nav-item .material-icons-outlined {
+      font-size: 1.3rem;
+    }
+
+    .user-profile {
+      margin: 16px;
+      padding: 16px;
+      background: #f8faf9;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .user-info {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .user-info strong {
+      display: block;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .user-info span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .btn-logout {
+      background: none;
+      border: none;
+      color: #e74c3c;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      transition: var(--transition);
+    }
+    .btn-logout:hover {
+      background: #fde8e8;
+    }
+
+    /* Main Content Area */
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px;
+      position: relative;
+    }
+
+    /* Top Bar */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .page-title h1 {
+      font-size: 2rem;
+      font-family: 'Playfair Display', serif;
+      margin: 0 0 4px 0;
+    }
+    .page-title p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .topbar-actions .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(11, 125, 59, 0.2);
+      transition: var(--transition);
+    }
+    .topbar-actions .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(11, 125, 59, 0.3);
+    }
+
+    /* View Sections */
+    .view-section {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--primary-light), var(--primary));
+      opacity: 0;
+      transition: var(--transition);
+    }
+    .stat-card:hover::before { opacity: 1; }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Table Styles */
+    .card-panel {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .card-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .card-panel-header h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 12px;
+    }
+    .filter-tab {
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: #f0f4f2;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .filter-tab.active, .filter-tab:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .styled-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+    }
+
+    .styled-table th {
+      text-align: left;
+      padding: 12px 16px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .styled-table td {
+      padding: 16px;
+      background: #fafcfb;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .styled-table td:first-child {
+      border-left: 1px solid var(--border);
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+    }
+    .styled-table td:last-child {
+      border-right: 1px solid var(--border);
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    .styled-table tr {
+      transition: var(--transition);
+    }
+    .styled-table tr:hover td {
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    /* Status Badges */
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .status-ativo { background: #dff7e6; color: #136b2f; }
+    .status-pendente { background: #fff3cd; color: #856404; }
+    .status-pausado { background: #e2e3e5; color: #383d41; }
+    .status-reprovado { background: #f8d7da; color: #721c24; }
+
+    /* Action Buttons */
+    .action-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      margin-right: 4px;
+    }
+    .action-btn:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .action-btn.delete:hover {
+      background: #fde8e8;
+      color: #e74c3c;
+    }
+    .action-btn.pause:hover {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    /* Form Styles */
+    .premium-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      background: #fafcfb;
+      transition: var(--transition);
+    }
+    .form-group input:focus, 
+    .form-group select:focus, 
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+      background: white;
+    }
+
+    .file-drop-area {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      background: #fafcfb;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .file-drop-area:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .file-drop-area .material-icons-outlined {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .form-actions {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-outline:hover {
+      background: #f0f4f2;
+    }
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(11, 125, 59, 0.2);
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(11, 125, 59, 0.3);
+    }
+
+    /* Help Section */
+    .help-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .help-card {
+      background: var(--surface);
+      padding: 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .help-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--primary);
+      margin-top: 0;
+    }
+    .status-explanation {
+      margin-top: 20px;
+    }
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .status-item p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
+
+    /* Alert Message */
+    #globalMsg {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 16px 24px;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 1000;
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    #globalMsg.show {
+      transform: translateX(0);
+    }
+    #globalMsg .icon { font-size: 1.5rem; }
+    #globalMsg.sucesso .icon { color: var(--primary); }
+    #globalMsg.erro .icon { color: #e74c3c; }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal-content {
+      background: white;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 20px;
+      padding: 32px;
+      transform: translateY(20px);
+      transition: var(--transition);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+    .modal-close {
+      float: right;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .modal-details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .detail-item {
+      background: #f8faf9;
+      padding: 12px 16px;
+      border-radius: 10px;
+    }
+    .detail-item small { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;}
+    .detail-item p { margin: 4px 0 0 0; font-weight: 600; font-size: 0.95rem; }
+    .detail-image {
+      grid-column: 1 / -1;
+      height: 200px;
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      background-color: #f0f4f2;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">K</div>
+      <div class="brand-name">Kakuab Market</div>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item active" onclick="switchView('dashboard', this)">
+        <span class="material-icons-outlined">dashboard</span>
+        Dashboard
+      </a>
+      <a class="nav-item" onclick="switchView('anuncios', this)">
+        <span class="material-icons-outlined">inventory_2</span>
+        Meus Anúncios
+      </a>
+      <a class="nav-item" onclick="switchView('novo', this)">
+        <span class="material-icons-outlined">add_circle_outline</span>
+        Novo Anúncio
+      </a>
+      <a class="nav-item" onclick="switchView('ajuda', this)">
+        <span class="material-icons-outlined">help_outline</span>
+        Ajuda e Regras
+      </a>
+    </nav>
+
+    <div class="user-profile">
+      <div class="avatar" id="userInitial">F</div>
+      <div class="user-info">
+        <strong id="userName">Carregando...</strong>
+        <span id="userEmail">fornecedor@email.com</span>
+      </div>
+      <button class="btn-logout" onclick="logout()" title="Sair">
+        <span class="material-icons-outlined">logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <!-- DASHBOARD VIEW -->
+    <section id="view-dashboard" class="view-section active">
+      <div class="topbar">
+        <div class="page-title">
+          <h1 id="welcomeText">Bem-vindo, Empresa</h1>
+          <p>Acompanhe o desempenho dos seus anúncios e vendas B2B.</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn" onclick="switchView('novo', document.querySelectorAll('.nav-item')[2])">
+            <span class="material-icons-outlined">add</span> Novo Anúncio
+          </button>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon"><span class="material-icons-outlined">inventory</span></div>
+          <div class="stat-value" id="statTotal">0</div>
+          <div class="stat-label">Total de Anúncios</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="color: #136b2f; background: #dff7e6;"><span class="material-icons-outlined">check_circle</span></div>
+          <div class="stat-value" id="statAtivos">0</div>
+          <div class="stat-label">Anúncios Ativos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="color: #856404; background: #fff3cd;"><span class="material-icons-outlined">hourglass_empty</span></div>
+          <div class="stat-value" id="statPendentes">0</div>
+          <div class="stat-label">Aguardando Aprovação</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="color: #383d41; background: #e2e3e5;"><span class="material-icons-outlined">pause_circle</span></div>
+          <div class="stat-value" id="statPausados">0</div>
+          <div class="stat-label">Pausados</div>
+        </div>
+      </div>
+
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <h3>Últimos Cadastrados</h3>
+          <a href="#" style="color: var(--primary); font-size: 0.9rem; font-weight: 600;" onclick="switchView('anuncios', document.querySelectorAll('.nav-item')[1])">Ver todos</a>
+        </div>
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Categoria</th>
+              <th>Status</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="dashLatestBody">
+            <tr><td colspan="4">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LIST VIEW (Meus Anúncios) -->
+    <section id="view-anuncios" class="view-section">
+      <div class="topbar">
+        <div class="page-title">
+          <h1>Meus Anúncios</h1>
+          <p>Gerencie todo o seu catálogo de produtos.</p>
+        </div>
+      </div>
+
+      <div class="card-panel">
+        <div class="card-panel-header">
+          <div class="filter-tabs">
+            <div class="filter-tab active" onclick="filtrarTabela('todos', this)">Todos</div>
+            <div class="filter-tab" onclick="filtrarTabela('ativo', this)">Ativos</div>
+            <div class="filter-tab" onclick="filtrarTabela('pendente', this)">Pendentes</div>
+            <div class="filter-tab" onclick="filtrarTabela('pausado', this)">Pausados</div>
+            <div class="filter-tab" onclick="filtrarTabela('reprovado', this)">Reprovados</div>
+          </div>
+        </div>
+        
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Imagem</th>
+              <th>Título</th>
+              <th>Categoria</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="anunciosBody">
+            <tr><td colspan="6">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- FORM VIEW (Novo / Editar) -->
+    <section id="view-novo" class="view-section">
+      <div class="topbar">
+        <div class="page-title">
+          <h1 id="formPageTitle">Cadastrar Novo Anúncio</h1>
+          <p>Preencha os detalhes do seu produto para compradores B2B.</p>
+        </div>
+      </div>
+
+      <div class="card-panel">
+        <form id="anuncioForm" class="premium-form">
+          <input type="hidden" id="anuncioId">
+          
+          <div class="form-group full">
+            <label>Título do Produto *</label>
+            <input type="text" id="titulo" name="titulo" placeholder="Ex: Batata Chips Lisa 50g" required>
+          </div>
+
+          <div class="form-group">
+            <label>Categoria *</label>
+            <select id="categoria" name="categoria" required>
+              <option value="">Selecione...</option>
+              <option value="chips">Chips</option>
+              <option value="castanhas">Castanhas</option>
+              <option value="outros">Outros</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Marca</label>
+            <input type="text" id="marca" name="marca" placeholder="Ex: Kakuab Snacks">
+          </div>
+
+          <div class="form-group">
+            <label>Unidade / Embalagem</label>
+            <input type="text" id="unidade_embalagem" name="unidade_embalagem" placeholder="Ex: Caixa com 20 unidades">
+          </div>
+
+          <div class="form-group">
+            <label>MOQ (Qtd. Mínima)</label>
+            <input type="number" id="moq" name="moq" placeholder="Ex: 50">
+          </div>
+
+          <div class="form-group">
+            <label>Prazo de Entrega</label>
+            <input type="text" id="prazo_entrega" name="prazo_entrega" placeholder="Ex: 7 a 15 dias úteis">
+          </div>
+
+          <div class="form-group">
+            <label>Região Atendida</label>
+            <input type="text" id="regiao_atendida" name="regiao_atendida" placeholder="Ex: Todo o Brasil, SP Capital...">
+          </div>
+
+          <div class="form-group">
+            <label>Formas de Contato</label>
+            <input type="text" id="formas_contato" name="formas_contato" placeholder="Ex: WhatsApp, Email...">
+          </div>
+
+          <div class="form-group full">
+            <label>Descrição Detalhada *</label>
+            <textarea id="descricao" name="descricao" rows="4" placeholder="Descreva os diferenciais do seu produto..." required></textarea>
+          </div>
+
+          <div class="form-group full" id="divStatus" style="display: none;">
+            <label>Status do Anúncio</label>
+            <select id="status" name="status">
+              <option value="pendente">Pendente</option>
+              <option value="ativo">Ativo</option>
+              <option value="pausado">Pausado</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label>Imagem do Produto</label>
+            <div class="file-drop-area" onclick="document.getElementById('imagem').click()">
+              <span class="material-icons-outlined">cloud_upload</span>
+              <p>Clique aqui para selecionar uma imagem (PNG, JPG, WEBP)</p>
+              <input type="file" id="imagem" name="imagem" accept="image/png,image/jpeg,image/webp" style="display: none;" onchange="updateFileName(this)">
+              <small id="fileName" style="color: var(--primary); font-weight: bold;"></small>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-outline" onclick="switchView('anuncios', document.querySelectorAll('.nav-item')[1])">Cancelar</button>
+            <button type="submit" class="btn-submit">Salvar Anúncio</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- HELP VIEW -->
+    <section id="view-ajuda" class="view-section">
+      <div class="topbar">
+        <div class="page-title">
+          <h1>Central de Ajuda</h1>
+          <p>Dicas e boas práticas para vender mais.</p>
+        </div>
+      </div>
+
+      <div class="help-grid">
+        <div class="help-card">
+          <h3><span class="material-icons-outlined">tips_and_updates</span> Como criar um bom anúncio?</h3>
+          <p>Para atrair empresas compradoras, forneça o máximo de informações possíveis.</p>
+          <ul style="padding-left: 20px; color: var(--text-muted); line-height: 1.8;">
+            <li>Use fotos claras, bem iluminadas e em fundo neutro.</li>
+            <li>Detalhe ingredientes e validade na descrição.</li>
+            <li>Seja realista com o Prazo de Entrega e MOQ.</li>
+          </ul>
+        </div>
+        
+        <div class="help-card">
+          <h3><span class="material-icons-outlined">rule</span> Motivos de Reprovação</h3>
+          <p>A administração pode reprovar seu anúncio se:</p>
+          <ul style="padding-left: 20px; color: var(--text-muted); line-height: 1.8;">
+            <li>As imagens estiverem borradas ou contiverem logotipos concorrentes.</li>
+            <li>O produto não pertencer ao nicho de alimentos permitidos.</li>
+            <li>Informações de contato no título ou descrição.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="help-card" style="margin-top: 24px;">
+        <h3><span class="material-icons-outlined">info</span> Entenda os Status</h3>
+        <div class="status-explanation">
+          <div class="status-item">
+            <span class="status-badge status-pendente">Pendente</span>
+            <p>Seu anúncio foi criado/editado e está na fila para revisão pela nossa equipe.</p>
+          </div>
+          <div class="status-item">
+            <span class="status-badge status-ativo">Ativo</span>
+            <p>Aprovado! O anúncio está visível para todos os compradores da plataforma.</p>
+          </div>
+          <div class="status-item">
+            <span class="status-badge status-pausado">Pausado</span>
+            <p>Você ocultou temporariamente este anúncio (útil para quando acaba o estoque).</p>
+          </div>
+          <div class="status-item">
+            <span class="status-badge status-reprovado">Reprovado</span>
+            <p>O anúncio violou alguma regra. Verifique os dados, edite e salve para nova análise.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Notification Toast -->
+  <div id="globalMsg">
+    <span class="material-icons-outlined icon">check_circle</span>
+    <span id="globalMsgText" style="font-weight: 600; font-size: 0.95rem;">Sucesso!</span>
+  </div>
+
+  <!-- Modal Detalhes -->
+  <div class="modal-overlay" id="modalDetalhes">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()"><span class="material-icons-outlined">close</span></button>
+      <h2 style="font-family: 'Playfair Display', serif; margin-top: 0;">Detalhes do Produto</h2>
+      
+      <div class="modal-details-grid" id="modalBody">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/fornecedor.js"></script>
+</body>
+</html>

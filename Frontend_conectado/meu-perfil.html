@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Meu Perfil - Kakuab Market">
+  <title>Meu Perfil | Kakuab Market</title>
+  
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/perfil.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/images/logo.png" alt="Kakuab Market Logo">
+        <strong>kakuab</strong> <span>market</span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Início</a>
+        <a href="index.html#products">Produtos</a>
+      </div>
+
+      <div class="nav-actions">
+        <div class="user-dropdown-container" id="navUserMenu">
+          <button aria-label="Menu do Usuário" class="user-menu-btn" onclick="toggleUserDropdown()">
+            <span class="material-icons-outlined">account_circle</span>
+            <span id="navUserName" style="font-size:0.9rem;font-weight:600;margin-left:4px;">Usuário</span>
+            <span class="material-icons-outlined" style="font-size:1rem;">expand_more</span>
+          </button>
+          
+          <div class="user-dropdown-menu" id="userDropdownMenu" style="display: none;">
+            <a href="meu-perfil.html"><span class="material-icons-outlined">person</span> Meu Perfil</a>
+            <a href="favoritos.html" id="linkFav"><span class="material-icons-outlined">favorite</span> Favoritos</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" onclick="fazerLogout()" class="logout-link"><span class="material-icons-outlined">logout</span> Sair</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="perfil-page container">
+    <div class="perfil-header">
+      <h1>Configurações da Conta</h1>
+      <p>Gerencie suas informações pessoais e credenciais de acesso.</p>
+    </div>
+
+    <div class="perfil-grid">
+      <!-- Card de Informações Estáticas -->
+      <section class="perfil-card">
+        <div class="card-header">
+          <span class="material-icons-outlined">badge</span>
+          <h2>Dados da Conta</h2>
+        </div>
+        <div class="card-body">
+          <div class="info-group">
+            <label>Tipo de Conta</label>
+            <div class="badge-tipo" id="txtTipoConta">Carregando...</div>
+          </div>
+          <div class="info-group">
+            <label>E-mail Cadastrado</label>
+            <p id="txtEmail" class="texto-dado">carregando@email.com</p>
+            <small class="text-muted">O e-mail é utilizado como login e não pode ser alterado.</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- Card de Edição -->
+      <section class="perfil-card">
+        <div class="card-header">
+          <span class="material-icons-outlined">manage_accounts</span>
+          <h2>Editar Perfil</h2>
+        </div>
+        <div class="card-body">
+          <form id="formPerfil" onsubmit="atualizarPerfil(event)">
+            <div class="form-group">
+              <label for="inputNome">Nome Completo (ou Razão Social)</label>
+              <input type="text" id="inputNome" class="form-control" required placeholder="Seu nome">
+            </div>
+
+            <div class="form-group">
+              <label for="inputSenha">Nova Senha (Opcional)</label>
+              <input type="password" id="inputSenha" class="form-control" placeholder="Deixe em branco para não alterar" minlength="6">
+            </div>
+
+            <div id="perfilMsgError" class="msg-error" style="display: none;"></div>
+            <div id="perfilMsgSuccess" class="msg-success" style="display: none;"></div>
+
+            <button type="submit" class="btn btn-primary btn-block" id="btnSalvar">
+              Salvar Alterações
+            </button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="margin-top: 0; padding-top: 20px;">
+        <p>© 2026 Kakuab Market. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/perfil.js"></script>
+</body>
+</html>

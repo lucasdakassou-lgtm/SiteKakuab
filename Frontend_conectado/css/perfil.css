@@ -1,0 +1,130 @@
+/* =============================================
+   KAKUAB MARKET - Perfil do Usuário
+   ============================================= */
+
+.perfil-page {
+  padding: 40px 20px;
+  min-height: calc(100vh - 64px - 100px);
+}
+
+.perfil-header {
+  margin-bottom: 32px;
+}
+
+.perfil-header h1 {
+  font-size: 2rem;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.perfil-header p {
+  color: var(--text-secondary);
+}
+
+.perfil-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 32px;
+}
+
+.perfil-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  border-bottom: 1px solid var(--gray-200);
+  background: var(--gray-50);
+}
+
+.card-header .material-icons-outlined {
+  color: var(--green-600);
+  font-size: 1.5rem;
+}
+
+.card-header h2 {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.card-body {
+  padding: 24px;
+}
+
+.info-group {
+  margin-bottom: 24px;
+}
+
+.info-group:last-child {
+  margin-bottom: 0;
+}
+
+.info-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.texto-dado {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.badge-tipo {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: var(--radius-xl);
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: var(--green-100);
+  color: var(--green-800);
+  text-transform: capitalize;
+}
+
+.badge-tipo.admin {
+  background: #E3F2FD;
+  color: #1565C0;
+}
+
+.badge-tipo.fornecedor {
+  background: #FFF3E0;
+  color: #E65100;
+}
+
+.msg-error {
+  background: #FFEBEE;
+  color: #C62828;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.msg-success {
+  background: #E8F5E9;
+  color: #2E7D32;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .perfil-grid {
+    grid-template-columns: 1fr;
+  }
+}
