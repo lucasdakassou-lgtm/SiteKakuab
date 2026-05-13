@@ -9,6 +9,102 @@ const cadastroSubtitle = document.getElementById("cadastroSubtitle");
 const cnpjInput = document.getElementById("registerCnpj");
 const telefoneInput = document.getElementById("registerTelefone");
 
+// ── Verificação de Gmail ──────────────────────────────────────────────────────
+const emailInput       = document.getElementById("registerEmail");
+const emailGroup       = document.getElementById("emailGroup");
+const emailStatusIcon  = document.getElementById("emailStatusIcon");
+const emailVerifyBadge = document.getElementById("emailVerifyBadge");
+
+let emailVerificado = null; // null = não verificado, true = válido, false = inválido
+let emailDebounceTimer = null;
+
+function setEmailState(state, mensagem) {
+  // Limpa classes
+  emailStatusIcon.className  = "email-status-icon";
+  emailVerifyBadge.className = "email-verify-badge";
+  emailGroup.classList.remove("email-ok", "email-bad");
+
+  if (state === "checking") {
+    emailStatusIcon.classList.add("checking");
+    emailStatusIcon.textContent = "";
+    emailVerifyBadge.classList.add("show");
+    emailVerifyBadge.className = "email-verify-badge show";
+    emailVerifyBadge.textContent = "⏳ Verificando...";
+    emailVerificado = null;
+
+  } else if (state === "valid") {
+    emailStatusIcon.classList.add("valid");
+    emailStatusIcon.textContent = "check_circle";
+    emailStatusIcon.classList.add("material-icons-outlined");
+    emailVerifyBadge.className = "email-verify-badge valid show";
+    emailVerifyBadge.textContent = mensagem || "✅ Gmail verificado";
+    emailGroup.classList.add("email-ok");
+    emailVerificado = true;
+
+  } else if (state === "invalid") {
+    emailStatusIcon.classList.add("invalid");
+    emailStatusIcon.textContent = "cancel";
+    emailStatusIcon.classList.add("material-icons-outlined");
+    emailVerifyBadge.className = "email-verify-badge invalid show";
+    emailVerifyBadge.textContent = mensagem || "❌ E-mail inválido";
+    emailGroup.classList.add("email-bad");
+    emailVerificado = false;
+
+  } else {
+    // reset
+    emailStatusIcon.textContent = "";
+    emailVerificado = null;
+  }
+}
+
+async function verificarGmail(email) {
+  // 1. Verificar formato básico de Gmail
+  const isGmail = /^[a-zA-Z0-9._%+\-]+@gmail\.com$/i.test(email);
+  if (!isGmail) {
+    setEmailState("invalid", "❌ Use um e-mail @gmail.com");
+    return;
+  }
+
+  // 2. Verificar via API gratuita se o domínio existe (sem CORS)
+  setEmailState("checking");
+  try {
+    const res = await fetch(
+      `https://api.mailcheck.ai/email/${encodeURIComponent(email)}`
+    );
+    if (!res.ok) throw new Error("Falha na API");
+    const data = await res.json();
+
+    // mailcheck.ai retorna: { disposable, mx, smtp, ... }
+    if (data.disposable === true) {
+      setEmailState("invalid", "❌ Gmail descartável não é permitido");
+    } else if (data.mx === false) {
+      setEmailState("invalid", "❌ Domínio de e-mail inválido");
+    } else {
+      setEmailState("valid", "✅ Gmail verificado");
+    }
+  } catch (_) {
+    // Se a API falhar, aceitar o formato (não bloquear o usuário)
+    setEmailState("valid", "✅ Formato de Gmail válido");
+  }
+}
+
+emailInput.addEventListener("input", () => {
+  clearTimeout(emailDebounceTimer);
+  const val = emailInput.value.trim();
+
+  // Limpa estado se campo estiver vazio
+  if (!val) {
+    setEmailState("reset");
+    return;
+  }
+
+  // Debounce de 800ms antes de verificar
+  emailDebounceTimer = setTimeout(() => {
+    verificarGmail(val);
+  }, 800);
+});
+
+
 // Muda o layout quando trocar comprador/fornecedor
 function atualizarLayoutPorTipo() {
   const tipo = tipoSelect.value;
@@ -111,6 +207,14 @@ cadastroForm.addEventListener("submit", async (e) => {
   if (!nome || !email || !senha || !tipo) {
     console.warn("[Cadastro] Validação falhou: Campos obrigatórios em branco.");
     return mostrarFeedback("Preencha todos os campos obrigatórios.", "erro");
+  }
+
+  // Verificação de Gmail
+  if (emailVerificado === false) {
+    return mostrarFeedback("O e-mail informado não é um Gmail válido.", "erro");
+  }
+  if (emailVerificado === null) {
+    return mostrarFeedback("Aguarde a verificação do Gmail antes de continuar.", "erro");
   }
 
   if (senha !== confirma) {

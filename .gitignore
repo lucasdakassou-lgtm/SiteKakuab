@@ -1,6 +1,15 @@
 node_modules/
 .env
 uploads/
-*.db
-*.sqlite
-src/database/Database.sqlite.db
+
+# Banco SQLite será enviado para demonstração acadêmica
+# *.db
+# *.sqlite
+# src/database/Database.sqlite.db
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.DS_Store
+Thumbs.db

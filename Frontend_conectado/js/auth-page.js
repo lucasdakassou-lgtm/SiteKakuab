@@ -55,6 +55,18 @@ async function configurarLogin() {
   const form = document.getElementById("loginForm");
   if (!form) return;
 
+  // Captura URL de destino (vindo de anúncio como visitante)
+  const urlParams = new URLSearchParams(window.location.search);
+  const redirectUrl = urlParams.get("redirect") || null;
+
+  // Mostra dica se veio de um anúncio
+  if (redirectUrl) {
+    mostrarMensagem(
+      "🔒 Faça login para ver os detalhes do anúncio.",
+      "sucesso"
+    );
+  }
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -76,6 +88,13 @@ async function configurarLogin() {
       console.log(`[auth-page] Tipo original do banco: '${tipoUserOriginal}' | Tipo normalizado: '${tipo}'`);
 
       setTimeout(() => {
+        // Se veio de uma página de destino (ex: anúncio), vai pra lá
+        if (redirectUrl) {
+          console.log(`[auth-page] -> Redirecionando de volta para: ${redirectUrl}`);
+          window.location.href = redirectUrl;
+          return;
+        }
+
         console.log(`[auth-page] Iniciando redirecionamento para tipo: '${tipo}'`);
         if (tipo === "fornecedor") {
           console.log("[auth-page] -> Indo para fornecedor.html");

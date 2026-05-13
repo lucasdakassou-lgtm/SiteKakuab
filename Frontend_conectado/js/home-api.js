@@ -13,6 +13,10 @@ let filtroAtivo = {
 };
 
 // --- AUTH & NAVBAR ---
+function estaLogado() {
+  return !!(KakuabAPI.getToken() && KakuabAPI.getUser());
+}
+
 function atualizarNavbar() {
   const token = KakuabAPI.getToken();
   const user = KakuabAPI.getUser();
@@ -24,10 +28,233 @@ function atualizarNavbar() {
     if (loginBtn) loginBtn.style.display = "none";
     if (userMenu) userMenu.style.display = "block";
     if (userName) userName.textContent = user.nome.split(" ")[0];
+    removerBannerVisitante();
   } else {
     if (loginBtn) loginBtn.style.display = "block";
     if (userMenu) userMenu.style.display = "none";
+    mostrarBannerVisitante();
   }
+}
+
+// --- BANNER DE VISITANTE ---
+function mostrarBannerVisitante() {
+  if (document.getElementById("bannerVisitante")) return; // já existe
+
+  const banner = document.createElement("div");
+  banner.id = "bannerVisitante";
+  banner.innerHTML = `
+    <div class="banner-visitante">
+      <span class="material-icons-outlined" style="font-size:1.2rem;">info</span>
+      <span>Você está navegando como <strong>visitante</strong>. Clique em um anúncio para ver os detalhes e seja redirecionado para o login.</span>
+      <div class="banner-visitante-btns">
+        <a href="login.html" class="banner-btn-login">Entrar</a>
+        <a href="cadastro.html" class="banner-btn-cadastro">Cadastrar</a>
+        <button onclick="fecharBannerVisitante()" aria-label="Fechar" class="banner-btn-fechar">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Injeta os estilos inline (sem arquivo CSS extra)
+  if (!document.getElementById("estilosBannerVisitante")) {
+    const style = document.createElement("style");
+    style.id = "estilosBannerVisitante";
+    style.textContent = `
+      .banner-visitante {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        background: linear-gradient(135deg, #14551f 0%, #2f8c37 100%);
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 0.875rem;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+        animation: slideDownBanner 0.4s ease;
+      }
+      @keyframes slideDownBanner {
+        from { transform: translateY(-100%); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+      }
+      .banner-visitante span:first-child { flex-shrink: 0; }
+      .banner-visitante > span:nth-child(2) { flex: 1; min-width: 180px; }
+      .banner-visitante-btns {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .banner-btn-login, .banner-btn-cadastro {
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.2s;
+      }
+      .banner-btn-login {
+        background: #fff;
+        color: #14551f;
+      }
+      .banner-btn-login:hover { background: #e8f5e9; }
+      .banner-btn-cadastro {
+        background: transparent;
+        color: #fff;
+        border: 1.5px solid rgba(255,255,255,0.7);
+      }
+      .banner-btn-cadastro:hover { background: rgba(255,255,255,0.12); }
+      .banner-btn-fechar {
+        background: transparent;
+        border: none;
+        color: rgba(255,255,255,0.8);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        padding: 2px;
+        border-radius: 50%;
+        transition: 0.2s;
+      }
+      .banner-btn-fechar:hover { color: #fff; background: rgba(255,255,255,0.15); }
+
+      /* Modal de redirecionamento para login */
+      .modal-login-overlay {
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.52);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeInOverlay 0.25s ease;
+      }
+      @keyframes fadeInOverlay {
+        from { opacity: 0; } to { opacity: 1; }
+      }
+      .modal-login-box {
+        background: #fff;
+        border-radius: 20px;
+        padding: 36px 32px;
+        max-width: 380px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+        animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      }
+      @keyframes popIn {
+        from { transform: scale(0.85); opacity: 0; }
+        to   { transform: scale(1);    opacity: 1; }
+      }
+      .modal-login-box .modal-icon {
+        font-size: 3rem;
+        color: #2f8c37;
+        margin-bottom: 12px;
+      }
+      .modal-login-box h3 {
+        margin: 0 0 8px;
+        color: #14551f;
+        font-size: 1.25rem;
+      }
+      .modal-login-box p {
+        color: #555;
+        font-size: 0.9rem;
+        margin: 0 0 22px;
+        line-height: 1.5;
+      }
+      .modal-login-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+      .modal-btn-ir-login {
+        padding: 10px 24px;
+        border-radius: 22px;
+        border: none;
+        background: #2f8c37;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: 0.2s;
+      }
+      .modal-btn-ir-login:hover { background: #14551f; }
+      .modal-btn-cadastro-modal {
+        padding: 10px 24px;
+        border-radius: 22px;
+        border: 2px solid #2f8c37;
+        background: transparent;
+        color: #2f8c37;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: 0.2s;
+      }
+      .modal-btn-cadastro-modal:hover { background: #f0faf1; }
+      .modal-btn-cancelar {
+        margin-top: 12px;
+        display: block;
+        color: #999;
+        font-size: 0.82rem;
+        cursor: pointer;
+        text-decoration: underline;
+        background: none;
+        border: none;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Insere antes do navbar ou no topo do body
+  const navbar = document.getElementById("navbar");
+  if (navbar) {
+    document.body.insertBefore(banner, navbar);
+  } else {
+    document.body.prepend(banner);
+  }
+}
+
+function removerBannerVisitante() {
+  const b = document.getElementById("bannerVisitante");
+  if (b) b.remove();
+}
+
+function fecharBannerVisitante() {
+  removerBannerVisitante();
+}
+
+// --- MODAL DE LOGIN PARA VISITANTE ---
+function mostrarModalLogin(urlDestino) {
+  // Remove modal existente
+  const existente = document.getElementById("modalLoginVisitante");
+  if (existente) existente.remove();
+
+  const loginUrl = `login.html?redirect=${encodeURIComponent(urlDestino)}`;
+  const cadastroUrl = `cadastro.html?redirect=${encodeURIComponent(urlDestino)}`;
+
+  const overlay = document.createElement("div");
+  overlay.id = "modalLoginVisitante";
+  overlay.className = "modal-login-overlay";
+  overlay.innerHTML = `
+    <div class="modal-login-box">
+      <div class="modal-icon">
+        <span class="material-icons-outlined">lock_outline</span>
+      </div>
+      <h3>Faça login para continuar</h3>
+      <p>Para ver os detalhes deste anúncio você precisa ter uma conta no Kakuab Market.</p>
+      <div class="modal-login-btns">
+        <a href="${loginUrl}" class="modal-btn-ir-login">Entrar</a>
+        <a href="${cadastroUrl}" class="modal-btn-cadastro-modal">Cadastrar</a>
+      </div>
+      <button class="modal-btn-cancelar" onclick="document.getElementById('modalLoginVisitante').remove()">Continuar navegando</button>
+    </div>
+  `;
+
+  // Fecha ao clicar fora da caixa
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) overlay.remove();
+  });
+
+  document.body.appendChild(overlay);
 }
 
 function toggleUserDropdown() {
@@ -228,9 +455,12 @@ function renderizarGrid(anuncios) {
             <div><span class="material-icons-outlined" style="font-size:14px;vertical-align:middle;">place</span> ${local}</div>
           </div>
           <div class="product-price">${preco}</div>
-          <a href="detalhes-anuncio.html?id=${id}" class="btn product-btn" style="text-decoration:none; display:block; text-align:center;">
+          <button
+            class="btn product-btn"
+            onclick="abrirAnuncio(${id}, 'detalhes-anuncio.html?id=${id}')"
+            style="width:100%; border:none; cursor:pointer;">
             Ver Detalhes
-          </a>
+          </button>
         </div>
       </div>
     `;
@@ -238,10 +468,19 @@ function renderizarGrid(anuncios) {
 }
 
 // --- AÇÕES ---
+
+// Abre anúncio: redireciona para login se visitante
+function abrirAnuncio(id, urlDestino) {
+  if (!estaLogado()) {
+    mostrarModalLogin(urlDestino);
+    return;
+  }
+  window.location.href = urlDestino;
+}
+
 async function favoritarAnuncio(id, btnElement) {
-  if (!KakuabAPI.getToken() || !KakuabAPI.getUser()) {
-    alert("Você precisa fazer login como comprador para favoritar produtos.");
-    window.location.href = "login.html";
+  if (!estaLogado()) {
+    mostrarModalLogin(`detalhes-anuncio.html?id=${id}`);
     return;
   }
 
@@ -251,14 +490,13 @@ async function favoritarAnuncio(id, btnElement) {
     if (icon.textContent === "favorite") {
       icon.textContent = "favorite_border";
       btnElement.classList.remove("active");
-      await KakuabAPI.desfavoritar(id); // Assume que KakuabAPI.desfavoritar existe
+      await KakuabAPI.desfavoritar(id);
     } else {
       icon.textContent = "favorite";
       btnElement.classList.add("active");
       await KakuabAPI.favoritar(id);
     }
   } catch (error) {
-    // Reverte
     console.error(error);
     alert("Erro ao favoritar: " + (error.message || "Erro desconhecido"));
   }

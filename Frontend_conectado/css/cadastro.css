@@ -43,7 +43,7 @@ body {
   align-items: center;
   justify-content: center;
 
-  padding: 28px 48px;
+  padding: 16px 36px;
   overflow-y: auto;
 
   z-index: 5;
@@ -112,7 +112,7 @@ body {
 .cadastro-content {
   width: 100%;
   max-width: 430px;
-  padding: 24px 0;
+  padding: 12px 0;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
@@ -125,9 +125,9 @@ body {
 
 /* Título */
 .cadastro-title {
-  margin: 0 0 8px;
+  margin: 0 0 4px;
   color: #14551f;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 900;
   font-style: italic;
   line-height: 1.2;
@@ -135,9 +135,9 @@ body {
 
 /* Subtítulo */
 .cadastro-subtitle {
-  margin: 0 0 22px;
+  margin: 0 0 10px;
   color: #444;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 /* Formulário */
@@ -145,23 +145,23 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 7px;
 }
 
 /* Inputs */
 .input-group {
   width: 100%;
-  height: 50px;
+  height: 44px;
   position: relative;
 
   background: #fff;
   border: 1px solid #e7e7e7;
-  border-radius: 22px;
+  border-radius: 18px;
 
   display: flex;
   align-items: center;
 
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
 
   transition: 0.25s ease;
 }
@@ -206,6 +206,72 @@ body {
   pointer-events: none;
 }
 
+/* Ícone de status de verificação de e-mail */
+.email-status-icon {
+  position: absolute;
+  right: 14px;
+  font-size: 18px;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+.email-status-icon.checking {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ccc;
+  border-top-color: #2f8c37;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  right: 13px;
+}
+
+.email-status-icon.valid {
+  color: #27ae60;
+}
+
+.email-status-icon.invalid {
+  color: #e74c3c;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Badge de verificação de Gmail */
+.email-verify-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 20px;
+  margin-top: -3px;
+  display: none;
+  transition: all 0.3s ease;
+}
+
+.email-verify-badge.show { display: inline-block; }
+
+.email-verify-badge.valid {
+  background: #e6f9ee;
+  color: #1a7a40;
+  border: 1px solid #a8e6bc;
+}
+
+.email-verify-badge.invalid {
+  background: #fde8e8;
+  color: #c0392b;
+  border: 1px solid #f5b7b1;
+}
+
+/* Borda de estado no grupo de e-mail */
+#emailGroup.email-ok {
+  border-color: rgba(39, 174, 96, 0.5);
+}
+
+#emailGroup.email-bad {
+  border-color: rgba(231, 76, 60, 0.45);
+}
+
 /* Linha cidade + estado */
 .input-row {
   display: grid;
@@ -240,22 +306,22 @@ body {
 /* Botão */
 .cadastro-btn {
   width: 100%;
-  height: 52px;
+  height: 46px;
 
   border: none;
-  border-radius: 22px;
+  border-radius: 18px;
 
   background: #359844;
   color: #fff;
 
-  font-size: 1rem;
+  font-size: 0.97rem;
   font-weight: 900;
 
   cursor: pointer;
 
-  margin-top: 6px;
+  margin-top: 4px;
 
-  box-shadow: 0 8px 20px rgba(53, 152, 68, 0.25);
+  box-shadow: 0 6px 16px rgba(53, 152, 68, 0.25);
   transition: 0.3s ease;
 }
 
@@ -273,10 +339,10 @@ body {
 
 /* Link login */
 .login-prompt {
-  margin-top: 18px;
+  margin-top: 10px;
   text-align: center;
   color: #444;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .login-prompt a {

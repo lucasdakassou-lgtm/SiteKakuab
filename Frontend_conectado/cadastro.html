@@ -33,10 +33,12 @@
             <input type="text" id="registerName" placeholder="Nome completo" required>
           </div>
 
-          <div class="input-group">
+          <div class="input-group" id="emailGroup">
             <span class="material-icons-outlined input-icon">email</span>
-            <input type="email" id="registerEmail" placeholder="E-mail" required>
+            <input type="email" id="registerEmail" placeholder="E-mail (Gmail)" required autocomplete="off">
+            <span class="email-status-icon" id="emailStatusIcon"></span>
           </div>
+          <div class="email-verify-badge" id="emailVerifyBadge"></div>
 
           <div class="input-group">
             <span class="material-icons-outlined input-icon">badge</span>
