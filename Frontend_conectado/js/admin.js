@@ -116,7 +116,8 @@ function selecionarAnuncio(id) {
   
   const imgContainer = document.getElementById("detalheImgContainer");
   if (anuncioSelecionado.imagem || anuncioSelecionado.imagemUrl) {
-    const url = "http://localhost:3000" + (anuncioSelecionado.imagem || anuncioSelecionado.imagemUrl);
+    const baseUrl = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL.replace("/api", "") : "http://localhost:3000";
+    const url = baseUrl + (anuncioSelecionado.imagem || anuncioSelecionado.imagemUrl);
     imgContainer.innerHTML = `<img src="${url}" alt="Produto">`;
   } else {
     imgContainer.innerHTML = `<span class="material-icons-outlined">image</span>`;

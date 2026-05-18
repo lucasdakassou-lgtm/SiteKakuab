@@ -133,7 +133,8 @@ function renderTabela(lista) {
 
   body.innerHTML = lista.map((a) => {
     const id = a.id_anuncio || a.id;
-    const thumb = a.imagem ? `<img src="http://localhost:3000${a.imagem}" style="width: 40px; height: 40px; border-radius: 8px; object-fit: cover;">` : `<div style="width: 40px; height: 40px; border-radius: 8px; background: #eee; display: flex; align-items:center; justify-content:center;"><span class="material-icons-outlined" style="color:#aaa; font-size:1.2rem;">image</span></div>`;
+    const baseUrl = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL.replace("/api", "") : "http://localhost:3000";
+    const thumb = a.imagem ? `<img src="${baseUrl}${a.imagem}" style="width: 40px; height: 40px; border-radius: 8px; object-fit: cover;">` : `<div style="width: 40px; height: 40px; border-radius: 8px; background: #eee; display: flex; align-items:center; justify-content:center;"><span class="material-icons-outlined" style="color:#aaa; font-size:1.2rem;">image</span></div>`;
     
     return `
       <tr>
@@ -265,7 +266,8 @@ function verDetalhes(id) {
   const ad = todosAnuncios.find(a => (a.id_anuncio || a.id) === id);
   if(!ad) return;
 
-  const imgBg = ad.imagem ? `url(http://localhost:3000${ad.imagem})` : 'none';
+  const baseUrl = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL.replace("/api", "") : "http://localhost:3000";
+  const imgBg = ad.imagem ? `url(${baseUrl}${ad.imagem})` : 'none';
 
   document.getElementById("modalBody").innerHTML = `
     <div class="detail-image" style="background-image: ${imgBg};">
