@@ -23,7 +23,7 @@ const userRoutes = require("./routes/userRoutes");
 const rateLimit = require("express-rate-limit");
 const app = express();
 
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(cors({
   origin: [
     "http://localhost:5500",

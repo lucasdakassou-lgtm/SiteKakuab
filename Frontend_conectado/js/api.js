@@ -5,7 +5,7 @@
    ============================================================ */
 
 // Troque essa URL se o backend estiver em outra porta ou hospedagem.
-const API_BASE_URL = "https://sitekakuab.onrender.com/api";
+const API_BASE_URL = "http://localhost:3000/api";
 
 function getToken() {
   return localStorage.getItem("kakuab_token");
