@@ -55,9 +55,9 @@ exports.criar = async (req, res) => {
 
     // 3. Criar anúncio
     let imagemUrl = null;
-    if (req.file) {
-      ${process.env.BASE_URL}/uploads/${req.file.filename}
-    }
+  if (req.file) {
+  imagemUrl = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
+}
 
     const dados = {
       id_fornecedor: fornecedorId,
