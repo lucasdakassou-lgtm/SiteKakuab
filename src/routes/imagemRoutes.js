@@ -40,7 +40,7 @@ router.get("/anuncios/:id", (req, res) => {
     }
 
     const filename = path.basename(anuncio.imagem);
-    const imagePath = path.join(__dirname, "../../uploads", filename);
+    const imagePath = path.join(__dirname, "/uploads", filename);
 
     return res.sendFile(imagePath);
   });
