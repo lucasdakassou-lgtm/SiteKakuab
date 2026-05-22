@@ -184,9 +184,9 @@ exports.atualizar = async (req, res) => {
     if (!categoriaId) return res.status(400).json({ error: "Categoria não encontrada" });
 
     let imagemUrl = undefined;
-    if (req.file) {
-      imagemUrl = `/uploads/${req.file.filename}`;
-    }
+  if (req.file) {
+  imagemUrl = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
+}
 
     const dados = {
       id_categoria: categoriaId,
